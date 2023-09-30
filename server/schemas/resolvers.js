@@ -12,12 +12,25 @@ const resolvers = {
         }
     },
     Mutation: {
-        login: async (email, password) => {
+        login: async ({ email, password }) => {
             // return auth?
+            const user = await User.findOne({ email });
+
+            if (!user) {
+                throw new AuthenticationError('No user with this email found!')
+            };
+
+            const correctPw = await profile.isCorrectPassword(password);
+
+            if (!correctPw) {
+                throw new AuthenticationError('Incorrect password!');
+            }
+
+            const token = signToken(user);
+            return { token, user };
         },
         addUser: async (userData) => {
-            // return auth?
-            const user = await User.create({userData});
+            const user = await User.create({ userData });
 
             if (!user) {
                 return res.status(400).json({ message: 'Something is wrong!' });
