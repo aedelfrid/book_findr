@@ -27,14 +27,14 @@ const resolvers = {
         },
         saveBook: async ({ book }, context) => {
             return User.findOneAndUpdate(
-                { _id: user._id },
+                { _id: context.user._id },
                 { $addToSet: { book } },
                 { new: true, runValidators: true }
             )
         },
         removeBook: async (bookID, context) => {
             return User.findOneAndUpdate(
-                { _id: user._id },
+                { _id: context.user._id },
                 { $pull: { savedBooks: { bookID: bookID } } },
                 { new: true }
             );
