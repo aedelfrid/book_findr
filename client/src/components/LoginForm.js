@@ -29,6 +29,7 @@ const LoginForm = () => {
     }
 
     try {
+      console.log(userFormData)
       const { data } = await login({
         variables: { ...userFormData }
       })
